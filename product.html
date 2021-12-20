@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/7f96e552e5.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="images/shopping-cart-solid.svg" type="image/x-icon">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+    <style>
+        #navbarDiv{
+            background-color: rgb(0, 162, 255);
+        }
+
+        .navbar-brand i{
+            margin-right: 0.5rem;
+        }
+
+        nav ul li{
+            padding-left: 1rem;
+        }
+
+        #prodName{
+            margin: 2rem 0rem 1rem 2rem;
+            font-weight: 600;
+        }
+
+        #prodImg{
+            height: 22rem;
+            margin: 2rem;
+        }
+
+        #prodDesc{
+            display: inline-block;
+            margin: 0.5rem 2rem;
+        }
+
+        .price-tag{
+            display: inline-block;
+            font-weight: 600;
+            margin: 0.5rem 2rem;
+        }
+
+        .old-price{
+            display: inline-block;
+            color: grey;
+            text-decoration: line-through;
+            font-size: 15px;
+            margin-left: 2rem;
+        }
+
+        .customButton{
+            display: block;
+        }
+
+        #more-details .row div{
+            border-radius: 1.5rem;
+            padding: 3%;
+        }
+
+        /* #more-details divs */
+        #features{
+            background-color: rgb(0, 162, 255); 
+            color: white; 
+            /* margin: 1rem; */
+        }
+
+        #reviews{
+            color: rgb(0, 162, 255);
+            /* margin: 1rem; */
+        }
+
+        #reviews i{
+            font-size: 2rem;
+        }
+
+        @media screen and (max-width: 590px){
+            #features, #reviews{
+                margin: 0.5rem 0rem;
+                padding-right: 0rem;
+            }
+
+            .text{
+                margin-left: 1rem;
+            }
+        }
+    </style>
+</head>
+<body onload="setProdDetails()">
+    <i class="fas fa-shopping-cart cartButton"></i>
+    <div class="container-fluid" id="navbarDiv">
+        <nav class="navbar sticky-top navbar-expand-md navbar-dark" style="background-color: transparent;">
+            <a href="" class="navbar-brand" style="padding-left: 15px; padding-bottom: 9px;"><i class="fas fa-shopping-cart"></i>MarcoMart</a>
+            <!-- Hamburger Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarItems" aria-controls="navbarItems" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id ="navbarItems">
+                <ul class="navbar-nav ms-auto" style="padding-right: 15px;">
+                    <li class="navbar-item"> <a class="nav-link active" href="#title">Home</a></li>
+                    <li class="navbar-item"> <a class="nav-link" href="#offers">Offers</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Products
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#featured">Featured</a></li>
+                          <li><a class="dropdown-item" href="#">Electronics</a></li>
+                          <li><a class="dropdown-item" href="#">Men</a></li>
+                          <li><a class="dropdown-item" href="#">Women</a></li>
+                          <li><a class="dropdown-item" href="#">Children</a></li>
+                          <li><a class="dropdown-item" href="#">Home Care</a></li>
+                          <li><a class="dropdown-item" href="#">Sports and Outdoors</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-item"> <a class="nav-link" href="#contact-us">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img  id="prodImg" src="images/not-found.jpg" alt="">
+            </div>
+            <div class="col-md-6">
+                <h2 id="prodName">Default Product Name</h2>
+                <p id="prodDesc">Default description of the product; Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <br>
+                <h3 class="price-tag">₹12,499</h3><h6 class="old-price">₹14,499</h6>
+                <button type="button" class="btn customButton add-to-cart" onclick="addToCart(1)">Add to Cart</button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="more-details">
+        <div class="row">
+            <div class="col-md-6" id="features">
+                <section class="text">
+                    <h3 style="font-weight: 600;">Features</h3>
+                    <ul>
+                        <li>a</li>
+                        <li>a</li>
+                        <li>a</li>
+                        <li>a</li>
+                        <li>a</li>
+                    </ul>
+                </section>
+            </div>
+            <!-- <div class="col-md-1"></div> -->
+            <div class="col-md-6" id="reviews">
+                <section class="text">
+                    <h3 style="font-weight: 600;">Reviews</h3>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half"></i>
+                        <h3 style="display: inline-block;">4.5 / 5.0 stars</h3>
+                </section>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
