@@ -19,7 +19,10 @@ function login(){
                 alert('Login success!!');
                 maxAttempts = 3;
                 window.location.href = "./home.html";
-                //redirect to next page here
+                
+                //Had to enclose this here or it got initialized everytime we went back and forth
+                sessionStorage.setItem('cartSize', 0);
+                sessionStorage.setItem('cartItems', new Array(12).fill(0).join(';'))
             }
             else alert("Wrong password!!");
         }
@@ -61,12 +64,8 @@ var productList=[
 ];
 
 var placeholder = " Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-//var prodID = 0;
-window.prodID = 0;
 
 function productPage(index){
-        // prodID = index;
-        // window.prodID = index;
     sessionStorage.setItem("prodID", index);
     // alert( "ProdID changed to "+ sessionStorage.getItem("prodID") );
     window.location = "./product.html";
@@ -89,12 +88,75 @@ function productSquare(index){
     // no need for hardcoding the product squares, just put in index it'll change innerHTML
 }
 
-var cartItems = 0;
 
-// function addToCart(index){
-//     cartItems++;
-//     let productSquare = document.getElementsByClassName("product-square")
-//     let addToCartButton = productSquare.getElementsByClassName("add-to-cart")[index-1];
-//     productSquare.addToCartButton.remove();
-//     productSquare.
-// }
+
+function addToCart(index){
+    sessionStorage.setItem('cartSize', Number(sessionStorage.getItem('cartSize'))+1);
+    cartItems = sessionStorage.getItem('cartItems').split(';');
+    cartItems[index-1] = Number(cartItems[index-1]) + 1;
+    sessionStorage.setItem('cartItems', cartItems.join(';'))
+}
+
+function showCart(){
+    alert(`Products bought are ${sessionStorage.getItem('cartItems')}`);
+    window.location = './shoppingCart.html';
+}
+
+function itemPlus(){
+    // update the actual cartItem cartList too. You want just call addToCart() here. find a way around the index of the item
+
+    //should be index in place of 0 in this below line
+    let qty = document.getElementsByTagName('input')[0];
+    qty.value = Number(qty.value) + 1;
+}
+
+function itemMinus(){
+    let qty = document.getElementsByTagName('input')[0];
+    qty.value = Number(qty.value) - 1;
+}
+
+function createLI(index){ //index 1- 12
+    let liDiv = document.createElement('div');
+    liDiv.className = 'col-md-10 col-sm-6 product-li';
+    liDiv.innerHTML += `<div class="container">
+                            <div class="row">
+                                <div class="col-4 liImg">
+                                    <img src="${productList[index]['picture']}">
+                                </div>
+                                <div class="col-4 liName">
+                                    <h4 style="display: inline-block;">${productList[index]['name']}</h4>
+                                    <h6 class="price-tag">₹${productList[index]['price']}</h6>
+                                </div>
+                                <div class="col-4 liQuantity">
+                                    <button type="button" class="btn minusBtn" onclick="itemMinus()">-</button>
+                                    <input type="text" class="qty" value="${sessionStorage.getItem('cartItems').split(';')[index-1]}">
+                                    <button type="button" class="btn plusBtn" onclick="itemPlus()">+</button>
+                                </div>
+                            </div>
+                        </div>`
+    return liDiv;
+
+    // Use this for reference
+    // var div = document.createElement('div');
+    // div.id = 'container';
+    // div.innerHTML = 'Hi there!';
+    // div.className = 'border pad';
+ 
+    // document.body.appendChild(div);
+}
+
+function renderList(){
+    let defaultItem = document.getElementById('defaultItem');
+    defaultItem.parentNode.removeChild(defaultItem);
+
+    let itemList = document.getElementById('shopping-cart');
+    cartItems = sessionStorage.getItem('cartItems').split(';');
+    let shoppingList = document.getElementById('actual-list');
+    cartItems.forEach((item, index, array) => {
+        if(Number(item)>0){
+            let newItem = createLI(index+1);
+            shoppingList.appendChild(newItem);
+        }
+    });
+}
+
