@@ -98,7 +98,7 @@ function addToCart(index){
 }
 
 function showCart(){
-    alert(`Products bought are ${sessionStorage.getItem('cartItems')}`);
+    //alert(`Products bought are ${sessionStorage.getItem('cartItems')}`);
     window.location = './shoppingCart.html';
 }
 
