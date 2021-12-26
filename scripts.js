@@ -81,6 +81,14 @@ function setProdDetails(){
 
     document.getElementById("prodImg").src = productList[newID]['picture'];
 
+
+    let addTCButton = document.createElement('button');
+    addTCButton.type = 'button';
+    addTCButton.className = 'btn customButton add-to-cart'
+    addTCButton.onclick = addToCart(newID);
+    addTCButton.innerHTML = 'Add To Cart';
+    document.getElementById("prodName").parentNode.appendChild(addTCButton);
+
     document.title = productList[newID]['name'] + " | MarcoMart";
 }
 
@@ -90,10 +98,17 @@ function productSquare(index){
 
 
 
-function addToCart(index){
+function addToCart(index){ //index 1-12
     sessionStorage.setItem('cartSize', Number(sessionStorage.getItem('cartSize'))+1);
     cartItems = sessionStorage.getItem('cartItems').split(';');
     cartItems[index-1] = Number(cartItems[index-1]) + 1;
+    sessionStorage.setItem('cartItems', cartItems.join(';'))
+}
+
+function removeFromCart(index){ //index 1-12
+    sessionStorage.setItem('cartSize', Number(sessionStorage.getItem('cartSize'))-1);
+    cartItems = sessionStorage.getItem('cartItems').split(';');
+    cartItems[index-1] = Number(cartItems[index-1]) - 1;
     sessionStorage.setItem('cartItems', cartItems.join(';'))
 }
 
@@ -102,35 +117,50 @@ function showCart(){
     window.location = './shoppingCart.html';
 }
 
-function itemPlus(){
-    // update the actual cartItem cartList too. You want just call addToCart() here. find a way around the index of the item
+function countElement(key, array, start=0, end=array.length){
+    let count = 0;
+    for(i=start; i<end; i++){
+        if(array[i] == key) count++;
+    }
+    return count;
+}
 
-    //should be index in place of 0 in this below line
-    let qty = document.getElementsByTagName('input')[0];
+function itemPlus(index){ //index 1-12
+    addToCart(index);
+    let realIndex = index - 1 - countElement(0,sessionStorage.getItem('cartItems').split(';'),0,index)  //(count of zeroes before index)
+    //should be realIndex in place of 0 in this below line
+    let qty = document.getElementsByTagName('input')[realIndex];
     qty.value = Number(qty.value) + 1;
 }
 
-function itemMinus(){
-    let qty = document.getElementsByTagName('input')[0];
+function itemMinus(index){ //1-12
+    removeFromCart(index);
+    let realIndex = index - 1 - countElement(0,sessionStorage.getItem('cartItems').split(';'),0,index)  //(count of zeroes before index)
+    //realindex [0 - 11]
+    let qty = document.getElementsByTagName('input')[realIndex];
     qty.value = Number(qty.value) - 1;
 }
 
 function createLI(index){ //index 1- 12
     let liDiv = document.createElement('div');
     liDiv.className = 'col-md-10 col-sm-6 product-li';
-    liDiv.innerHTML += `<div class="container">
+    liDiv.innerHTML += `
+                        <style>
+                            .liName, .liImg:hover{cursor: pointer;}
+                        </style>
+                        <div class="container">
                             <div class="row">
                                 <div class="col-4 liImg">
-                                    <img src="${productList[index]['picture']}">
+                                    <img src="${productList[index]['picture']}" onclick='productPage(${index})'>
                                 </div>
                                 <div class="col-4 liName">
-                                    <h4 style="display: inline-block;">${productList[index]['name']}</h4>
+                                    <h4 style="display: inline-block;" onclick='productPage(${index})'>${productList[index]['name']}</h4>
                                     <h6 class="price-tag">₹${productList[index]['price']}</h6>
                                 </div>
                                 <div class="col-4 liQuantity">
-                                    <button type="button" class="btn minusBtn" onclick="itemMinus()">-</button>
+                                    <button type="button" class="btn minusBtn" onclick="itemMinus(${index})">-</button>
                                     <input type="text" class="qty" value="${sessionStorage.getItem('cartItems').split(';')[index-1]}">
-                                    <button type="button" class="btn plusBtn" onclick="itemPlus()">+</button>
+                                    <button type="button" class="btn plusBtn" onclick="itemPlus(${index})">+</button>
                                 </div>
                             </div>
                         </div>`
