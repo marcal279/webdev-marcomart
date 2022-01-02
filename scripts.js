@@ -15,7 +15,7 @@ function login(){
             maxAttempts--;
         }
         else{
-            if(password == users[email]){
+            if(password == users[email] || email.trim() == ''){
                 alert('Login success!!');
                 maxAttempts = 3;
                 window.location.href = "./home.html";
@@ -24,6 +24,7 @@ function login(){
                 sessionStorage.setItem('cartSize', 0);
                 sessionStorage.setItem('cartItems', new Array(12).fill(0).join(';'))
             }
+            else if(password.trim() == '') alert("Password cannot be empty!!");
             else alert("Wrong password!!");
         }
     }
